@@ -1,0 +1,726 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Saphi Orchestrator's API",
+    "description": "Saphi Orchestrator's API",
+    "version": "1.0.0",
+    "contact": {
+      "name": "Jonathan Arancibia",
+      "url": "https://uncodeit.com",
+      "email": "jjp.arancibia@gmail.com"
+    }
+  },
+  "servers": [
+    {
+      "url": "http://35.232.135.144/api/v1",
+      "description": "Development Server"
+    }
+  ],
+  "tags": [
+    {
+      "name": "clientes",
+      "description": "Todo respecto a los clientes."
+    }
+  ],
+  "paths": {
+    "/clientes/login": {
+      "post": {
+        "tags": [
+          "clientes"
+        ],
+        "summary": "Servicio de Login para los clientes, incluye los métodos de Celular, Email, by Google y by Facebook.",
+        "operationId": "loginClient",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginClient"
+              },
+              "examples": {
+                "using-email": {
+                  "description": "Login de Cliente usando sólo el Email y Password",
+                  "value": {
+                    "email": "jjp.arancibia@gmail.com",
+                    "password": "secretPassword"
+                  }
+                },
+                "using-phone": {
+                  "description": "Login de Cliente usando sólo el Celular y Password",
+                  "value": {
+                    "phone": {
+                      "prefix": "+51",
+                      "number": "937208396"
+                    },
+                    "password": "secretPassword"
+                  }
+                },
+                "using-google": {
+                  "description": "Login de Cliente usando la autenticación por Google (SI EL USUARIO NO EXISTE, SE CREA UNA CUENTA AUTOMÁTICAMENTE)",
+                  "value": {
+                    "by": "google",
+                    "email": "jjp.arancibia@gmail.com",
+                    "firstName": "Jonathan",
+                    "lastName": "Arancibia",
+                    "userPicture": "url.to.photo"
+                  }
+                },
+                "using-facebook": {
+                  "description": "Login de Cliente usando la autenticación por Facebook (SI EL USUARIO NO EXISTE, SE CREA UNA CUENTA AUTOMÁTICAMENTE)",
+                  "value": {
+                    "by": "facebook",
+                    "email": "jjp.arancibia@gmail.com",
+                    "firstName": "Jonathan",
+                    "lastName": "Arancibia",
+                    "userPicture": "url.to.photo"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "client": {
+                      "$ref": "#/components/schemas/Client"
+                    },
+                    "token": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "examples": {
+                  "login-succeeded": {
+                    "description": "Valor retornado por el API luego que el login fue exitoso. El token tiene una expiración de 12 horas, será usado para las futuras consultas al API.",
+                    "value": {
+                      "client": {
+                        "email": "jjp.arancibia@gmail.com",
+                        "...": "..."
+                      },
+                      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImpqcC5hcmFuY2liaWF4QGdtYWlsLmNvbSIsInBob25lIjp7InByZWZpeCI6IiIsIm51bWJlciI6IiJ9LCJjbGllbnRJZCI6IjVlZTQyZGI4Y2UyMjUwNDhmY2YxNDY2NyIsImlhdCI6MTU5MjAxMjIxNiwiZXhwIjoxNTkyMDEyMjM2fQ.vFQ5DB9xUuoN-S58zqKzZwKfiVGbH0xBbY-4ZpDM6cA"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/clientes": {
+      "post": {
+        "tags": [
+          "clientes"
+        ],
+        "summary": "Crea un cliente, utilizando celular y correo.",
+        "operationId": "createClient",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/_Client"
+              },
+              "examples": {
+                "using-phone": {
+                  "description": "Registro de Cliente mediante el número de celular",
+                  "value": {
+                    "phone": {
+                      "prefix": "+51",
+                      "number": "937208397"
+                    },
+                    "password": "contrasena"
+                  }
+                },
+                "using-email": {
+                  "description": "Registro de Cliente mediante el correo electrónico",
+                  "value": {
+                    "email": "jjp.arancibia@gmail.com",
+                    "password": "contrasena"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Client"
+                },
+                "examples": {
+                  "using-phone": {
+                    "description": "Registro de Cliente mediante el número de celular",
+                    "value": {
+                      "firstName": "",
+                      "lastName": "",
+                      "dni": "",
+                      "phone": {
+                        "prefix": "+51",
+                        "number": "937208396"
+                      },
+                      "email": "",
+                      "password": "contrasena",
+                      "address": "",
+                      "addressReference": "",
+                      "location": {
+                        "type": "Point",
+                        "coordinates": [
+                          0,
+                          0
+                        ]
+                      },
+                      "createdAt": "2020-06-09T21:57:21.537Z",
+                      "updatedAt": "2020-06-09T21:57:21.537Z"
+                    }
+                  },
+                  "using-email": {
+                    "description": "Registro de Cliente mediante el correo electrónico",
+                    "value": {
+                      "firstName": "",
+                      "lastName": "",
+                      "dni": "",
+                      "phone": {
+                        "prefix": "",
+                        "number": ""
+                      },
+                      "email": "jjp.arancibia@gmail.com",
+                      "password": "contrasena",
+                      "address": "",
+                      "addressReference": "",
+                      "location": {
+                        "type": "Point",
+                        "coordinates": [
+                          0,
+                          0
+                        ]
+                      },
+                      "createdAt": "2020-06-09T21:57:21.537Z",
+                      "updatedAt": "2020-06-09T21:57:21.537Z"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "type": "object"
+                      }
+                    }
+                  }
+                },
+                "examples": {
+                  "password-missing": {
+                    "description": "No se envía el password",
+                    "value": {
+                      "errors": [
+                        {
+                          "code": "REQUIRED_FIELD_MISSING",
+                          "location": "body",
+                          "field": "password"
+                        }
+                      ]
+                    }
+                  },
+                  "password-min-length": {
+                    "description": "No se cumple la regla de 8 caracteres minimos para la contraseña",
+                    "value": {
+                      "errors": [
+                        {
+                          "code": "MINIMUM_LENGTH_ERROR",
+                          "location": "body",
+                          "field": "password"
+                        }
+                      ]
+                    }
+                  },
+                  "email-or-phone-required": {
+                    "description": "No se envía ni el correo ni el celular para registrar",
+                    "value": {
+                      "errors": [
+                        {
+                          "code": "REQUIRED_FIELD_MISSING",
+                          "location": "body",
+                          "description": "email or phone is required as minimal"
+                        }
+                      ]
+                    }
+                  },
+                  "email-invalid": {
+                    "description": "El correo no tiene un formato válido (ejemplo@saphi.io)",
+                    "value": {
+                      "errors": [
+                        {
+                          "code": "INVALID_VALUE",
+                          "location": "body",
+                          "field": "email"
+                        }
+                      ]
+                    }
+                  },
+                  "phone-number-missing": {
+                    "description": "Se envía el campo phone pero no se envía su propiedad number",
+                    "value": {
+                      "errors": [
+                        {
+                          "code": "REQUIRED_FIELD_MISSING",
+                          "location": "body",
+                          "field": "phone.number"
+                        }
+                      ]
+                    }
+                  },
+                  "phone-prefix-missing": {
+                    "description": "Se envía el campo phone pero no se envía su propiedad prefix",
+                    "value": {
+                      "errors": [
+                        {
+                          "code": "REQUIRED_FIELD_MISSING",
+                          "location": "body",
+                          "field": "phone.prefix"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "clientes"
+        ],
+        "summary": "Obtiene una lista de clientes, en base a los filtros que se apliquen en el campo query",
+        "operationId": "readClients",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "select",
+            "description": "Obtener los Clientes, pero sólo con los campos que deseamos",
+            "allowEmptyValue": false,
+            "style": "form",
+            "schema": {
+              "type": "string"
+            },
+            "examples": {
+              "only-some-fields": {
+                "value": "firstName,email,address"
+              },
+              "without-some-fields": {
+                "value": "-phone,-location,-password"
+              }
+            }
+          },
+          {
+            "in": "query",
+            "name": "sort",
+            "description": "Ordenar los resultados en base a uno o varios campos",
+            "allowEmptyValue": false,
+            "style": "form",
+            "schema": {
+              "type": "string"
+            },
+            "examples": {
+              "asc-one-field": {
+                "value": "+firstName"
+              },
+              "desc-one-field": {
+                "value": "-firstName"
+              },
+              "asc-one-desc-another-field": {
+                "value": "+firstName,-phone.number"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Client"
+                  }
+                },
+                "examples": {
+                  "select-one-field": {
+                    "description": "Sólo queremos los emails de los Clientes, entonces sólo enviamos en el query: select=email",
+                    "value": [
+                      {
+                        "email": "example1@gmail.com",
+                        "_id": "5ee0174948f53ec93c2dd1df"
+                      },
+                      {
+                        "email": "example2@gmail.com",
+                        "_id": "5ee0174648f53ec93c2dd1de"
+                      }
+                    ]
+                  },
+                  "select-multiple-fields": {
+                    "description": "Sólo queremos los emails y los firstName de los Clientes, entonces sólo enviamos en el query separados por una coma (,): select=email,firstName",
+                    "value": [
+                      {
+                        "email": "example1@gmail.com",
+                        "firstName": "Jonathan",
+                        "_id": "5ee0174948f53ec93c2dd1df"
+                      },
+                      {
+                        "email": "example2@gmail.com",
+                        "firstName": "Ejemplo 2",
+                        "_id": "5ee0174648f53ec93c2dd1de"
+                      }
+                    ]
+                  },
+                  "deselect-one-or-multiple-fields": {
+                    "description": "Solo queremos los Clientes pero sin algunos campos como (location, phone.prefix, email), les anteponemos el símbolo - y enviamos en el query: select=-location,-phone.prefix,-email",
+                    "value": [
+                      {
+                        "phone": {
+                          "number": "937208394"
+                        },
+                        "firstName": "Jonathan",
+                        "lastName": "Arancibia",
+                        "dni": "",
+                        "address": "",
+                        "addressReference": "",
+                        "_id": "5ee0174948f53ec93c2dd1df",
+                        "password": "asdasdqwdq",
+                        "createdAt": "2020-06-09T21:57:21.537Z",
+                        "updatedAt": "2020-06-09T21:57:21.537Z"
+                      },
+                      {
+                        "phone": {
+                          "number": "937208394"
+                        },
+                        "firstName": "Ejemplo",
+                        "lastName": "Ejemplo",
+                        "dni": "",
+                        "address": "",
+                        "addressReference": "",
+                        "_id": "5ee0174648f53ec93c2dd1de",
+                        "password": "asdasdqwdq",
+                        "createdAt": "2020-06-09T23:11:52.597Z",
+                        "updatedAt": "2020-06-09T23:11:52.597Z"
+                      }
+                    ]
+                  },
+                  "sort-asc-or-desc": {
+                    "description": "Para ordenar crecientemente anteponemos el simbolo + antes del campo. Para ordenar decrecientemente anteponemos el simbolo - antes del campo. Y envíamos en el query: sort=-phone.prefix,+email podemos usarlo por si solo, o combinando con el select select=email,phone.prefix Finalmente el query quedaría: sort=-phone.prefix,+email&select=email,phone.prefix",
+                    "value": [
+                      {
+                        "phone": {
+                          "prefix": 52
+                        },
+                        "email": "jjp.arancibia@gmail.com",
+                        "_id": "5ee0174648f53ec93c2dd1de"
+                      },
+                      {
+                        "phone": {
+                          "prefix": 52
+                        },
+                        "email": "marcelo.marshmello@gmail.com",
+                        "_id": "5ee0174648f53ec93c2dd1dr"
+                      },
+                      {
+                        "phone": {
+                          "prefix": 51
+                        },
+                        "email": "arancibia@gmail.com",
+                        "_id": "5ee0174648f53ec93c2dd1sd"
+                      },
+                      {
+                        "phone": {
+                          "prefix": 51
+                        },
+                        "email": "tommy.tomaylla@gmail.com",
+                        "_id": "5ee0174648f53ec93c2ddkok"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "type": "object"
+                      }
+                    }
+                  }
+                },
+                "examples": {
+                  "wrong-sort": {
+                    "description": "Se genera una incorrecta consulta de ordenamiento (sort)",
+                    "value": {
+                      "errors": [
+                        {
+                          "code": "INVALID_VALUE",
+                          "location": "query",
+                          "field": "sort",
+                          "description": "In the sort field, it is necessary to indicate whether it is asc (+) or desc (-) for each value."
+                        }
+                      ]
+                    }
+                  },
+                  "wrong-select": {
+                    "description": "Se genera una incorrecta consulta de selección (select)",
+                    "value": {
+                      "errors": [
+                        {
+                          "code": "INVALID_VALUE",
+                          "location": "query",
+                          "field": "select",
+                          "description": "In the select field you can only select or deselect, not both."
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "_Client": {
+        "type": "object",
+        "description": "Objeto para solicitar la creación de un nuevo cliente",
+        "required": [
+          "email",
+          "phone",
+          "password"
+        ],
+        "properties": {
+          "firstName": {
+            "type": "string",
+            "default": ""
+          },
+          "lastName": {
+            "type": "string",
+            "default": ""
+          },
+          "dni": {
+            "type": "string",
+            "default": ""
+          },
+          "phone": {
+            "type": "object",
+            "properties": {
+              "prefix": {
+                "type": "string",
+                "default": ""
+              },
+              "number": {
+                "type": "string",
+                "default": ""
+              }
+            }
+          },
+          "email": {
+            "type": "string",
+            "default": ""
+          },
+          "password": {
+            "type": "string",
+            "format": "password",
+            "description": "La contraseña debe de tener como mínimo, 8 caracteres."
+          },
+          "address": {
+            "type": "string",
+            "description": "Dirección del Cliente",
+            "default": ""
+          },
+          "addressReference": {
+            "type": "string",
+            "description": "Referencia de la Dirección del Cliente",
+            "default": ""
+          },
+          "location": {
+            "type": "object",
+            "properties": {
+              "coordinates": {
+                "minItems": 2,
+                "maxItems": 2,
+                "type": "array",
+                "example": [
+                  0,
+                  0
+                ],
+                "items": {
+                  "type": "number"
+                }
+              }
+            }
+          },
+          "userPicture": {
+            "type": "string"
+          }
+        }
+      },
+      "Client": {
+        "description": "Objeto de un Cliente dentro de la Base de Datos",
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string"
+          },
+          "firstName": {
+            "type": "string",
+            "default": ""
+          },
+          "lastName": {
+            "type": "string",
+            "default": ""
+          },
+          "dni": {
+            "type": "string",
+            "default": ""
+          },
+          "phone": {
+            "type": "object",
+            "properties": {
+              "prefix": {
+                "type": "string",
+                "default": ""
+              },
+              "number": {
+                "type": "string",
+                "default": ""
+              }
+            }
+          },
+          "email": {
+            "type": "string",
+            "default": ""
+          },
+          "password": {
+            "type": "string",
+            "format": "password"
+          },
+          "address": {
+            "type": "string",
+            "description": "Dirección del Cliente",
+            "default": ""
+          },
+          "addressReference": {
+            "type": "string",
+            "description": "Referencia de la Dirección del Cliente",
+            "default": ""
+          },
+          "location": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": [
+                  "Point"
+                ],
+                "default": "Point"
+              },
+              "coordinates": {
+                "minItems": 2,
+                "maxItems": 2,
+                "type": "array",
+                "example": [
+                  0,
+                  0
+                ],
+                "items": {
+                  "type": "number"
+                }
+              }
+            }
+          },
+          "userPicture": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "LoginClient": {
+        "description": "Objeto para realizar el login de un cliente",
+        "type": "object",
+        "required": [
+          "email",
+          "phone",
+          "password"
+        ],
+        "properties": {
+          "by": {
+            "type": "string",
+            "enum": [
+              "google",
+              "facebook"
+            ]
+          },
+          "email": {
+            "type": "string"
+          },
+          "phone": {
+            "type": "object",
+            "properties": {
+              "prefix": {
+                "type": "string"
+              },
+              "number": {
+                "type": "string"
+              }
+            }
+          },
+          "password": {
+            "type": "string"
+          },
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "userPicture": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

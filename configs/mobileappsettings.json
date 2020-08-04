@@ -1,0 +1,22 @@
+{
+    "app_name": "Oki Place",
+    "default_tax": "10",
+    "default_currency": "S/",
+    "main_color": "#29c005",
+    "main_dark_color": "#29c005",
+    "second_color": "#344968",
+    "second_dark_color": "#ccccdd",
+    "accent_color": "#29c005",
+    "accent_dark_color": "#9999aa",
+    "scaffold_dark_color": "#2c2c2c",
+    "scaffold_color": "#fafafa",
+    "google_maps_key": "AIzaSyAT07iMlfZ9bJt1gmGj9KhJDLFY8srI6dA",
+    "mobile_language": "es",
+    "app_version": "1.0.0",
+    "enable_version": "1",
+    "currency_right": "0",
+    "default_currency_decimal_digits": "2",
+    "enable_paypal": "0",
+    "enable_razorpay": "0",
+    "enable_stripe": "0"
+}
