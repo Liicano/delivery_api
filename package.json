@@ -17,7 +17,7 @@
     "google-distance": "^1.0.1",
     "google-geolocation": "^1.0.2",
     "jsonwebtoken": "^8.5.1",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.21",
     "mongoose": "^5.9.17",
     "twilio": "^3.46.0"
   },
